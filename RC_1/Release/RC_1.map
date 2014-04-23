@@ -3,9 +3,9 @@ Archive member included because of file (symbol)
 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_exit.o)
                               c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4/crtm8.o (exit)
 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_copy_data.o)
-                              RC_1.o (__do_copy_data)
+                              main.o (__do_copy_data)
 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_clear_bss.o)
-                              RC_1.o (__do_clear_bss)
+                              main.o (__do_clear_bss)
 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4\libc.a(eerd_byte_atmega8.o)
                               CyberLib.o (__eerd_byte_m8)
 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4\libc.a(eerd_word_atmega8.o)
@@ -30,10 +30,10 @@ Discarded input sections
                 0x00000000        0x2 CyberLib.o
  .text._Z15ReadEEPROM_Longh
                 0x00000000       0x72 CyberLib.o
- .text          0x00000000        0x0 RC_1.o
- .bss           0x00000000        0x0 RC_1.o
+ .text          0x00000000        0x0 main.o
+ .bss           0x00000000        0x0 main.o
  .text._Z17delayMicrosecondsj
-                0x00000000       0x14 RC_1.o
+                0x00000000       0x14 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_exit.o)
  .text.libgcc.mul
@@ -106,7 +106,7 @@ Linker script and memory map
 
 LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4/crtm8.o
 LOAD CyberLib.o
-LOAD RC_1.o
+LOAD main.o
 START GROUP
 LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4\libm.a
 END GROUP
@@ -303,55 +303,55 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
                 0x000000dc        0x4 CyberLib.o
                 0x000000dc                _Z15ReadEEPROM_Byteh
  .text.__vector_9
-                0x000000e0       0x94 RC_1.o
+                0x000000e0       0x94 main.o
                 0x000000e0                __vector_9
  .text._Z6millisv
-                0x00000174       0x24 RC_1.o
+                0x00000174       0x24 main.o
                 0x00000174                _Z6millisv
  .text._Z6microsv
-                0x00000198       0x56 RC_1.o
+                0x00000198       0x56 main.o
                 0x00000198                _Z6microsv
  .text._Z5delaym
-                0x000001ee       0x48 RC_1.o
+                0x000001ee       0x48 main.o
                 0x000001ee                _Z5delaym
  .text._Z4initv
-                0x00000236       0x40 RC_1.o
+                0x00000236       0x40 main.o
                 0x00000236                _Z4initv
  .text._ZN5dht114readEv
-                0x00000276      0x144 RC_1.o
+                0x00000276      0x144 main.o
                 0x00000276                _ZN5dht114readEv
  .text._Z11changeValuePb
-                0x000003ba       0x12 RC_1.o
+                0x000003ba       0x12 main.o
                 0x000003ba                _Z11changeValuePb
  .text._Z8saveSetsv
-                0x000003cc       0x30 RC_1.o
+                0x000003cc       0x30 main.o
                 0x000003cc                _Z8saveSetsv
  .text._Z8loadSetsv
-                0x000003fc       0x62 RC_1.o
+                0x000003fc       0x62 main.o
                 0x000003fc                _Z8loadSetsv
  .text._Z8initFuncv
-                0x0000045e       0xd8 RC_1.o
+                0x0000045e       0xd8 main.o
                 0x0000045e                _Z8initFuncv
  .text._Z8readSetsv
-                0x00000536       0xfa RC_1.o
+                0x00000536       0xfa main.o
                 0x00000536                _Z8readSetsv
  .text._Z9applySetsv
-                0x00000630       0x76 RC_1.o
+                0x00000630       0x76 main.o
                 0x00000630                _Z9applySetsv
  .text._Z13seekButtPressv
-                0x000006a6      0x342 RC_1.o
+                0x000006a6      0x342 main.o
                 0x000006a6                _Z13seekButtPressv
  .text._Z6seekDDv
-                0x000009e8       0xd8 RC_1.o
+                0x000009e8       0xd8 main.o
                 0x000009e8                _Z6seekDDv
  .text._Z7sendAllv
-                0x00000ac0      0x1c6 RC_1.o
+                0x00000ac0      0x1c6 main.o
                 0x00000ac0                _Z7sendAllv
  .text.startup.main
-                0x00000c86       0x5a RC_1.o
+                0x00000c86       0x5a main.o
                 0x00000c86                main
  .text.__vector_11
-                0x00000ce0       0xf0 RC_1.o
+                0x00000ce0       0xf0 main.o
                 0x00000ce0                __vector_11
  .text.avr-libc
                 0x00000dd0       0x10 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4\libc.a(eerd_byte_atmega8.o)
@@ -392,7 +392,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  *(.data)
  .data          0x00800060        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4/crtm8.o
  .data          0x00800060        0x0 CyberLib.o
- .data          0x00800060        0x0 RC_1.o
+ .data          0x00800060        0x0 main.o
  .data          0x00800060        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_exit.o)
  .data          0x00800060        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_copy_data.o)
  .data          0x00800060        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/avr4\libgcc.a(_clear_bss.o)
@@ -403,7 +403,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  .data          0x00800060        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr4\libc.a(eerd_block_atmega8.o)
  *(.data*)
  .data.light_time
-                0x00800060        0x4 RC_1.o
+                0x00800060        0x4 main.o
                 0x00800060                light_time
  *(.rodata)
  *(.rodata*)
@@ -416,33 +416,33 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
                 0x00800064                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.sensor    0x00800064        0x4 RC_1.o
+ .bss.sensor    0x00800064        0x4 main.o
                 0x00800064                sensor
- .bss.dd2time   0x00800068        0x4 RC_1.o
+ .bss.dd2time   0x00800068        0x4 main.o
                 0x00800068                dd2time
- .bss.dd1time   0x0080006c        0x4 RC_1.o
+ .bss.dd1time   0x0080006c        0x4 main.o
                 0x0080006c                dd1time
- .bss.dd        0x00800070        0x4 RC_1.o
+ .bss.dd        0x00800070        0x4 main.o
                 0x00800070                dd
- .bss.set       0x00800074        0xf RC_1.o
+ .bss.set       0x00800074        0xf main.o
                 0x00800074                set
- .bss.but       0x00800083       0x10 RC_1.o
+ .bss.but       0x00800083       0x10 main.o
                 0x00800083                but
- .bss.lifetm    0x00800093        0x4 RC_1.o
+ .bss.lifetm    0x00800093        0x4 main.o
                 0x00800093                lifetm
  .bss.inputsize
-                0x00800097        0x2 RC_1.o
+                0x00800097        0x2 main.o
                 0x00800097                inputsize
- .bss.input     0x00800099       0x14 RC_1.o
+ .bss.input     0x00800099       0x14 main.o
                 0x00800099                input
  .bss.timer0_millis
-                0x008000ad        0x4 RC_1.o
+                0x008000ad        0x4 main.o
                 0x008000ad                timer0_millis
  .bss.timer0_overflow_count
-                0x008000b1        0x4 RC_1.o
+                0x008000b1        0x4 main.o
                 0x008000b1                timer0_overflow_count
  .bss._ZL12timer0_fract
-                0x008000b5        0x1 RC_1.o
+                0x008000b5        0x1 main.o
  *(COMMON)
                 0x008000b6                PROVIDE (__bss_end, .)
                 0x00000dfe                __data_load_start = LOADADDR (.data)
@@ -508,7 +508,7 @@ LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.2.1002/avr
  *(.comment)
  .comment       0x00000000       0x2f CyberLib.o
                                  0x30 (size before relaxing)
- .comment       0x00000000       0x30 RC_1.o
+ .comment       0x00000000       0x30 main.o
 
 .debug
  *(.debug)

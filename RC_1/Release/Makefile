@@ -37,7 +37,7 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../CyberLib.cpp \
-../RC_1.cpp
+../main.cpp
 
 
 PREPROCESSING_SRCS += 
@@ -48,19 +48,19 @@ ASM_SRCS +=
 
 OBJS +=  \
 CyberLib.o \
-RC_1.o
+main.o
 
 OBJS_AS_ARGS +=  \
 CyberLib.o \
-RC_1.o
+main.o
 
 C_DEPS +=  \
 CyberLib.d \
-RC_1.d
+main.d
 
 C_DEPS_AS_ARGS +=  \
 CyberLib.d \
-RC_1.d
+main.d
 
 OUTPUT_FILE_PATH +=RC_1.elf
 

@@ -9,7 +9,7 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 #include <avr/wdt.h>
-#include <avr/delay.h>
+#include <util/delay.h>
 
 //#if defined(ARDUINO) && ARDUINO >= 100
 //  #include "Arduino.h"
