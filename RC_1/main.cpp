@@ -9,6 +9,7 @@ long int lifetm;
 long int but[4];
 bool set[15];
 bool dd[4];
+bool tread;
 //
 unsigned long dd1time;
 unsigned long dd2time;
@@ -67,6 +68,7 @@ void initFunc()
   but[2]=-1;
   but[3]=-1;
 
+  tread = true;
   loadSets();
 
   dd[0]=false;
@@ -324,7 +326,12 @@ int main(void)
 	  {
 		D13_Inv;
 		//sendAll();
-		sensor.read();
+		if (tread == true)
+		{	
+			tread = false;
+			sensor.read();
+		}
+		else tread = true;
 		lifetm = 0;
 	  }
 	  seekButtPress();
