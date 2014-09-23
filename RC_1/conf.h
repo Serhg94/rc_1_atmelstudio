@@ -9,11 +9,15 @@
 #ifndef CONF_H_
 #define CONF_H_
 
-#define SN 5
-#define VERSION "0.6"
+#define SN 6
+#define VERSION "0.7"
 #define BAUDRATE_HIGH 0x00
 #define BAUDRATE_LOW 0x10
 #define F_CPU 16000000UL
+
+#define LIFETM_LEN 60000
+#define SEEK_INPUT_STATES_DEVISOR 100
+#define SEEK_BUTT_DEVISOR 8
 
 
 

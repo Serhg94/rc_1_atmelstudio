@@ -3,6 +3,8 @@
 //
 const uint8_t end1 = B11111110;
 const uint8_t end2 = B11111101;
+long int INPUT_STATES_TIMEOUT = LIFETM_LEN/SEEK_INPUT_STATES_DEVISOR;
+long int BUTT_TIMEOUT = LIFETM_LEN/SEEK_BUTT_DEVISOR;
 uint8_t input[20];               // СЃСЋРґР° РїСЂРёС…РѕРґСЏС‚ Р±Р°Р№С‚С‹ РёР· РїРѕСЂС‚Р°
 int inputsize=0;
 long int lifetm;
@@ -11,11 +13,14 @@ bool set[15];
 bool dd[4];
 bool tread;
 //
+long int inputs_timeout[8];
+bool _inputs[8];
+//
 unsigned long dd1time;
 unsigned long dd2time;
 unsigned long light_time=45000;
 //
-dht11 sensor;
+//dht11 sensor;
 //
 //
 void initFunc() 
@@ -77,6 +82,15 @@ void initFunc()
   dd[3]=false;
 
   D0_In;
+
+  _inputs[0] = D4_Read;
+  _inputs[1] = D5_Read;
+  _inputs[2] = D6_Read;
+  _inputs[3] = D7_Read;
+  _inputs[4] = D3_Read;
+  _inputs[5] = D12_Read;
+  _inputs[6] = D18_Read;
+  _inputs[7] = D19_Read;
 
 }
 //
@@ -164,6 +178,37 @@ void applySets()
   if (set[11]==true) D17_High; else D17_Low;    
 }
 //
+// определение состояния входов
+void seekInputState(int pin, bool state)
+{
+	if (inputs_timeout[pin]!=-1) {
+		if (lifetm<inputs_timeout[pin]) {
+			if (LIFETM_LEN+lifetm-inputs_timeout[pin] > INPUT_STATES_TIMEOUT){
+				_inputs[pin] = state;
+				inputs_timeout[pin]=-1;
+			}
+		}
+		else
+		if (lifetm-inputs_timeout[pin] > INPUT_STATES_TIMEOUT){
+			_inputs[pin] = state;
+			inputs_timeout[pin]=-1;
+		}
+	}
+	if ((_inputs[pin]!=state)&&(inputs_timeout[pin]==-1))
+	inputs_timeout[pin]=lifetm;
+}
+void seekInputStates()
+{
+	seekInputState(0, D4_Read);
+	seekInputState(1, D5_Read);
+	seekInputState(2, D6_Read);
+	seekInputState(3, D7_Read);
+	seekInputState(4, D3_Read);
+	seekInputState(5, D12_Read);
+	seekInputState(6, D18_Read);
+	seekInputState(7, D19_Read);
+}
+//
 // ищет нажатия кнопок, с обработкой дребезга контактов
 void seekButtPress()
 {
@@ -172,10 +217,10 @@ void seekButtPress()
     if (but[0]!=-1)
     {
       if (lifetm<but[0]) 
-        {if (LIFETM_LEN+lifetm-but[0] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[0]=-1;}
-      else if (lifetm-but[0] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[0]=-1;
+        {if (LIFETM_LEN+lifetm-but[0] > BUTT_TIMEOUT) but[0]=-1;}
+      else if (lifetm-but[0] > BUTT_TIMEOUT) but[0]=-1;
     }
-    if ((D4_Read==LOW)&&(but[0]==-1))
+    if ((_inputs[0]==false)&&(but[0]==-1))
     {
       changeValue(&set[0]);
       but[0]=lifetm;
@@ -186,10 +231,10 @@ void seekButtPress()
     if (but[1]!=-1)
     {
       if (lifetm<but[1]) 
-        {if (LIFETM_LEN+lifetm-but[1] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[1]=-1;}
-      else if (lifetm-but[1] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[1]=-1;
+        {if (LIFETM_LEN+lifetm-but[1] > BUTT_TIMEOUT) but[1]=-1;}
+      else if (lifetm-but[1] > BUTT_TIMEOUT) but[1]=-1;
     }
-    if ((D5_Read==LOW)&&(but[1]==-1))
+    if ((_inputs[1]==false)&&(but[1]==-1))
     {
       changeValue(&set[1]);
       but[1]=lifetm;
@@ -200,10 +245,10 @@ void seekButtPress()
     if (but[2]!=-1)
     {
       if (lifetm<but[2]) 
-        {if (LIFETM_LEN+lifetm-but[2] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[2]=-1;}
-      else if (lifetm-but[2] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[2]=-1;
+        {if (LIFETM_LEN+lifetm-but[2] > BUTT_TIMEOUT) but[2]=-1;}
+      else if (lifetm-but[2] > BUTT_TIMEOUT) but[2]=-1;
     }
-    if ((D6_Read==LOW)&&(but[2]==-1))
+    if ((_inputs[2]==false)&&(but[2]==-1))
     {
       changeValue(&set[2]);
       but[2]=lifetm;
@@ -214,10 +259,10 @@ void seekButtPress()
     if (but[3]!=-1)
     {
       if (lifetm<but[3]) 
-        {if (LIFETM_LEN+lifetm-but[3] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[3]=-1;}
-      else if (lifetm-but[3] > LIFETM_LEN/SEEK_BUTT_DEVISOR) but[3]=-1;
+        {if (LIFETM_LEN+lifetm-but[3] > BUTT_TIMEOUT) but[3]=-1;}
+      else if (lifetm-but[3] > BUTT_TIMEOUT) but[3]=-1;
     }
-    if ((D7_Read==LOW)&&(but[3]==-1))
+    if ((_inputs[3]==false)&&(but[3]==-1))
     {
       changeValue(&set[3]);
       but[3]=lifetm;
@@ -239,7 +284,7 @@ void seekDD()
         dd[0]=false;
       }
     }
-    if ((D6_Read==LOW))
+    if ((_inputs[2]==false))
     {
       dd[0]=true;
       dd[2]=true;
@@ -257,7 +302,7 @@ void seekDD()
         dd[1]=false;
       }
     }
-    if ((D7_Read==HIGH))
+    if ((_inputs[3]==true))
     {
       dd[1]=true;
       dd[3]=true;
@@ -295,16 +340,19 @@ void sendAll()
   int ibuf = A1_Read;
   buf[3] = (uint8_t)(ibuf >> 8);
   buf[4] = (uint8_t)(ibuf & B11111111);
-  if (D4_Read==HIGH) buf[5] |= B10000000; 
-  if (D5_Read==HIGH) buf[5] |= B01000000; 
-  if (D6_Read==HIGH) buf[5] |= B00100000; 
-  if (D7_Read==HIGH) buf[5] |= B00010000; 
-  buf[6] = (uint8_t)sensor.temperature;
-  buf[7] = (uint8_t)sensor.humidity;
-  if (D3_Read==HIGH) buf[8] |= B10000000; 
-  if (D12_Read==HIGH) buf[8] |= B01000000; 
-  if (D18_Read==HIGH) buf[8] |= B00100000; 
-  if (D19_Read==HIGH) buf[8] |= B00010000; 
+  if (_inputs[0]==true) buf[5] |= B10000000; 
+  if (_inputs[1]==true) buf[5] |= B01000000; 
+  if (_inputs[2]==true) buf[5] |= B00100000; 
+  if (_inputs[3]==true) buf[5] |= B00010000; 
+  //buf[6] = (uint8_t)sensor.temperature;
+  //buf[7] = (uint8_t)sensor.humidity;
+  ibuf = A0_Read;
+  buf[6] = (uint8_t)(ibuf >> 8);
+  buf[7] = (uint8_t)(ibuf & B11111111);
+  if (_inputs[4]==true) buf[8] |= B10000000; 
+  if (_inputs[5]==true) buf[8] |= B01000000; 
+  if (_inputs[6]==true) buf[8] |= B00100000; 
+  if (_inputs[7]==true) buf[8] |= B00010000; 
   buf[9] = 0 - (buf[0]+buf[1]+buf[2]+buf[3]+buf[4]+buf[5]+buf[6]+buf[7]+buf[8]);
   buf[10] = end1;
   buf[11] = end2;
@@ -325,15 +373,15 @@ int main(void)
 	  if (lifetm==LIFETM_LEN)
 	  {
 		D13_Inv;
-		//sendAll();
-		if (tread == true)
-		{	
-			tread = false;
-			sensor.read();
-		}
-		else tread = true;
+		//if (tread == true)
+		//{	
+		//	tread = false;
+		//	sensor.read();
+		//}
+		//else tread = true;
 		lifetm = 0;
 	  }
+	  seekInputStates();
 	  seekButtPress();
 	  seekDD();
 	  applySets();
