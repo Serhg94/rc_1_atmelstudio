@@ -10,7 +10,7 @@
 #define CONF_H_
 
 #define SN 6
-#define VERSION "0.7"
+#define VERSION "0.7.1"
 #define BAUDRATE_HIGH 0x00
 #define BAUDRATE_LOW 0x10
 #define F_CPU 16000000UL

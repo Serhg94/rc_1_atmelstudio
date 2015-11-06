@@ -104,23 +104,41 @@ void changeValue(bool * val)
 // чтение массива настройки из энергонезависимой пам€ти
 void saveSets()
 {
-  WriteEEPROM_Byte(0, set[4]);
-  WriteEEPROM_Byte(1, set[5]);
-  WriteEEPROM_Byte(2, set[6]);
-  WriteEEPROM_Byte(3, set[7]);
-  WriteEEPROM_Byte(4, set[8]);
-  WriteEEPROM_Byte(5, set[9]);
+  WriteEEPROM_Byte(0, set[0]);
+  WriteEEPROM_Byte(1, set[1]);
+  WriteEEPROM_Byte(2, set[2]);
+  WriteEEPROM_Byte(3, set[3]);
+  WriteEEPROM_Byte(4, set[4]);
+  WriteEEPROM_Byte(5, set[5]);
+  WriteEEPROM_Byte(6, set[6]);
+  WriteEEPROM_Byte(7, set[7]);
+  WriteEEPROM_Byte(8, set[8]);
+  WriteEEPROM_Byte(9, set[9]);
+  WriteEEPROM_Byte(10, set[10]);
+  WriteEEPROM_Byte(11, set[11]);
+  WriteEEPROM_Byte(12, set[12]);
+  WriteEEPROM_Byte(13, set[13]);
+  WriteEEPROM_Byte(14, set[14]);
 }
 //
 // загрузка массива настройки в энергонезависимую пам€ть
 void loadSets()
 {
-  set[4]=ReadEEPROM_Byte(0);
-  set[5]=ReadEEPROM_Byte(1);
-  set[6]=ReadEEPROM_Byte(2);
-  set[7]=ReadEEPROM_Byte(3);
-  set[8]=ReadEEPROM_Byte(4);
-  set[9]=ReadEEPROM_Byte(5);
+  set[0]=ReadEEPROM_Byte(0);
+  set[1]=ReadEEPROM_Byte(1);
+  set[2]=ReadEEPROM_Byte(2);
+  set[3]=ReadEEPROM_Byte(3);	
+  set[4]=ReadEEPROM_Byte(4);
+  set[5]=ReadEEPROM_Byte(5);
+  set[6]=ReadEEPROM_Byte(6);
+  set[7]=ReadEEPROM_Byte(7);
+  set[8]=ReadEEPROM_Byte(8);
+  set[9]=ReadEEPROM_Byte(9);
+  set[10]=ReadEEPROM_Byte(10);
+  set[11]=ReadEEPROM_Byte(11);
+  set[12]=ReadEEPROM_Byte(12);
+  set[13]=ReadEEPROM_Byte(13);
+  set[14]=ReadEEPROM_Byte(14);
 }
 //
 // чтение массива настройки из управл€ющей команды
@@ -220,7 +238,7 @@ void seekButtPress()
         {if (LIFETM_LEN+lifetm-but[0] > BUTT_TIMEOUT) but[0]=-1;}
       else if (lifetm-but[0] > BUTT_TIMEOUT) but[0]=-1;
     }
-    if ((_inputs[0]==false)&&(but[0]==-1))
+    if ((_inputs[0]==set[12])&&(but[0]==-1))
     {
       changeValue(&set[0]);
       but[0]=lifetm;
@@ -234,7 +252,7 @@ void seekButtPress()
         {if (LIFETM_LEN+lifetm-but[1] > BUTT_TIMEOUT) but[1]=-1;}
       else if (lifetm-but[1] > BUTT_TIMEOUT) but[1]=-1;
     }
-    if ((_inputs[1]==false)&&(but[1]==-1))
+    if ((_inputs[1]==set[13])&&(but[1]==-1))
     {
       changeValue(&set[1]);
       but[1]=lifetm;
@@ -248,7 +266,7 @@ void seekButtPress()
         {if (LIFETM_LEN+lifetm-but[2] > BUTT_TIMEOUT) but[2]=-1;}
       else if (lifetm-but[2] > BUTT_TIMEOUT) but[2]=-1;
     }
-    if ((_inputs[2]==false)&&(but[2]==-1))
+    if ((_inputs[2]==set[14])&&(but[2]==-1))
     {
       changeValue(&set[2]);
       but[2]=lifetm;
@@ -284,7 +302,7 @@ void seekDD()
         dd[0]=false;
       }
     }
-    if ((_inputs[2]==false))
+    if ((_inputs[2]==set[14]))
     {
       dd[0]=true;
       dd[2]=true;
