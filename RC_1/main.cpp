@@ -3,8 +3,6 @@
 //
 const uint8_t end1 = B11111110;
 const uint8_t end2 = B11111101;
-long int INPUT_STATES_TIMEOUT = LIFETM_LEN/SEEK_INPUT_STATES_DEVISOR;
-long int BUTT_TIMEOUT = LIFETM_LEN/SEEK_BUTT_DEVISOR;
 uint8_t input[20];               // СЃСЋРґР° РїСЂРёС…РѕРґСЏС‚ Р±Р°Р№С‚С‹ РёР· РїРѕСЂС‚Р°
 int inputsize=0;
 long int lifetm;
@@ -12,6 +10,7 @@ long int but[4];
 bool set[15];
 bool dd[4];
 bool tread;
+bool connected_state;
 //
 long int inputs_timeout[8];
 bool _inputs[8];
@@ -67,13 +66,14 @@ void initFunc()
   set[12]=false;
   set[13]=false;
   set[14]=false;
-  
+
   but[0]=-1;
   but[1]=-1;
   but[2]=-1;
   but[3]=-1;
 
   tread = true;
+  connected_state = false;
   loadSets();
 
   dd[0]=false;
@@ -104,21 +104,21 @@ void changeValue(bool * val)
 // чтение массива настройки из энергонезависимой памяти
 void saveSets()
 {
-  WriteEEPROM_Byte(0, set[0]);
-  WriteEEPROM_Byte(1, set[1]);
-  WriteEEPROM_Byte(2, set[2]);
-  WriteEEPROM_Byte(3, set[3]);
-  WriteEEPROM_Byte(4, set[4]);
-  WriteEEPROM_Byte(5, set[5]);
-  WriteEEPROM_Byte(6, set[6]);
-  WriteEEPROM_Byte(7, set[7]);
-  WriteEEPROM_Byte(8, set[8]);
-  WriteEEPROM_Byte(9, set[9]);
-  WriteEEPROM_Byte(10, set[10]);
-  WriteEEPROM_Byte(11, set[11]);
-  WriteEEPROM_Byte(12, set[12]);
-  WriteEEPROM_Byte(13, set[13]);
-  WriteEEPROM_Byte(14, set[14]);
+  if (ReadEEPROM_Byte(0)!=set[0]) WriteEEPROM_Byte(0, set[0]);
+  if (ReadEEPROM_Byte(1)!=set[1]) WriteEEPROM_Byte(1, set[1]);
+  if (ReadEEPROM_Byte(2)!=set[2]) WriteEEPROM_Byte(2, set[2]);
+  if (ReadEEPROM_Byte(3)!=set[3]) WriteEEPROM_Byte(3, set[3]);
+  if (ReadEEPROM_Byte(4)!=set[4]) WriteEEPROM_Byte(4, set[4]);
+  if (ReadEEPROM_Byte(5)!=set[5]) WriteEEPROM_Byte(5, set[5]);
+  if (ReadEEPROM_Byte(6)!=set[6]) WriteEEPROM_Byte(6, set[6]);
+  if (ReadEEPROM_Byte(7)!=set[7]) WriteEEPROM_Byte(7, set[7]);
+  if (ReadEEPROM_Byte(8)!=set[8]) WriteEEPROM_Byte(8, set[8]);
+  if (ReadEEPROM_Byte(9)!=set[9]) WriteEEPROM_Byte(9, set[9]);
+  if (ReadEEPROM_Byte(10)!=set[10]) WriteEEPROM_Byte(10, set[10]);
+  if (ReadEEPROM_Byte(11)!=set[11]) WriteEEPROM_Byte(11, set[11]);
+  if (ReadEEPROM_Byte(12)!=set[12]) WriteEEPROM_Byte(12, set[12]);
+  if (ReadEEPROM_Byte(13)!=set[13]) WriteEEPROM_Byte(13, set[13]);
+  if (ReadEEPROM_Byte(14)!=set[14]) WriteEEPROM_Byte(14, set[14]);
 }
 //
 // загрузка массива настройки в энергонезависимую память
@@ -332,52 +332,52 @@ void seekDD()
 // 
 void sendAll()
 {
-  uint8_t buf[12];
-  buf[0] = B00000000; 
-  buf[1] = B00000000; buf[2] = B00000000; buf[3] = B00000000; buf[4] = B00000000; buf[5] = B00000000;
-  buf[6] = B00000000; buf[7] = B00000000; buf[8] = B00000000; buf[9] = B00000000; buf[10] = B00000000;
-  buf[11] = B00000000; 
-  D0_High;//digitalWrite(0, HIGH);
-  D2_High;//digitalWrite(2, HIGH);
-  buf[0] = (uint8_t)SN;
-  if (set[0]==true) buf[1] |= B10000000;  
-  if (set[1]==true) buf[1] |= B01000000;  
-  if (set[2]==true) buf[1] |= B00100000;  
-  if (set[3]==true) buf[1] |= B00010000;  
-  if (set[4]==true) buf[1] |= B00001000;  
-  if (set[5]==true) buf[1] |= B00000100;  
-  if (set[6]==true) buf[1] |= B00000010;  
-  if (set[7]==true) buf[1] |= B00000001;  
-  if (set[8]==true) buf[2] |= B01000000;  
-  if (set[9]==true) buf[2] |= B00100000;  
-  if (set[10]==true) buf[2] |= B00010000;  
-  if (set[11]==true) buf[2] |= B00001000;  
-  if (set[12]==true) buf[2] |= B00000100;  
-  if (set[13]==true) buf[2] |= B00000010;  
-  if (set[14]==true) buf[2] |= B00000001;  
-  int ibuf = A1_Read;
-  buf[3] = (uint8_t)(ibuf >> 8);
-  buf[4] = (uint8_t)(ibuf & B11111111);
-  if (_inputs[0]==true) buf[5] |= B10000000; 
-  if (_inputs[1]==true) buf[5] |= B01000000; 
-  if (_inputs[2]==true) buf[5] |= B00100000; 
-  if (_inputs[3]==true) buf[5] |= B00010000; 
-  //buf[6] = (uint8_t)sensor.temperature;
-  //buf[7] = (uint8_t)sensor.humidity;
-  ibuf = A0_Read;
-  buf[6] = (uint8_t)(ibuf >> 8);
-  buf[7] = (uint8_t)(ibuf & B11111111);
-  if (_inputs[4]==true) buf[8] |= B10000000; 
-  if (_inputs[5]==true) buf[8] |= B01000000; 
-  if (_inputs[6]==true) buf[8] |= B00100000; 
-  if (_inputs[7]==true) buf[8] |= B00010000; 
-  buf[9] = 0 - (buf[0]+buf[1]+buf[2]+buf[3]+buf[4]+buf[5]+buf[6]+buf[7]+buf[8]);
-  buf[10] = end1;
-  buf[11] = end2;
-  UART_SendArray(buf, 12);
-  delay(1);
-  D2_Low;//digitalWrite(2, LOW);
-  D0_Low;//digitalWrite(0, LOW);
+	uint8_t buf[12];
+	buf[0] = B00000000;
+	buf[1] = B00000000; buf[2] = B00000000; buf[3] = B00000000; buf[4] = B00000000; buf[5] = B00000000;
+	buf[6] = B00000000; buf[7] = B00000000; buf[8] = B00000000; buf[9] = B00000000; buf[10] = B00000000;
+	buf[11] = B00000000;
+	D0_High;//digitalWrite(0, HIGH);
+	D2_High;//digitalWrite(2, HIGH);
+	int ibuf = A1_Read;
+	buf[0] = (uint8_t)SN;
+	if (set[0]==true) buf[1] |= B10000000;
+	if (set[1]==true) buf[1] |= B01000000;
+	if (set[2]==true) buf[1] |= B00100000;
+	if (set[3]==true) buf[1] |= B00010000;
+	if (set[4]==true) buf[1] |= B00001000;
+	if (set[5]==true) buf[1] |= B00000100;
+	if (set[6]==true) buf[1] |= B00000010;
+	if (set[7]==true) buf[1] |= B00000001;
+	if (set[8]==true) buf[2] |= B01000000;
+	if (set[9]==true) buf[2] |= B00100000;
+	if (set[10]==true) buf[2] |= B00010000;
+	if (set[11]==true) buf[2] |= B00001000;
+	if (set[12]==true) buf[2] |= B00000100;
+	if (set[13]==true) buf[2] |= B00000010;
+	if (set[14]==true) buf[2] |= B00000001;
+	buf[3] = (uint8_t)(ibuf >> 8);
+	buf[4] = (uint8_t)(ibuf & B11111111);
+	if (_inputs[0]==true) buf[5] |= B10000000;
+	if (_inputs[1]==true) buf[5] |= B01000000;
+	if (_inputs[2]==true) buf[5] |= B00100000;
+	if (_inputs[3]==true) buf[5] |= B00010000;
+	//buf[6] = (uint8_t)sensor.temperature;
+	//buf[7] = (uint8_t)sensor.humidity;
+	if (_inputs[4]==true) buf[8] |= B10000000;
+	if (_inputs[5]==true) buf[8] |= B01000000;
+	if (_inputs[6]==true) buf[8] |= B00100000;
+	if (_inputs[7]==true) buf[8] |= B00010000;
+	ibuf = A0_Read;
+	buf[6] = (uint8_t)(ibuf >> 8);
+	buf[7] = (uint8_t)(ibuf & B11111111);
+	buf[9] = 0 - (buf[0]+buf[1]+buf[2]+buf[3]+buf[4]+buf[5]+buf[6]+buf[7]+buf[8]);
+	buf[10] = end1;
+	buf[11] = end2;
+	UART_SendArray(buf, 12);
+	_delay_us(100);
+	D2_Low;//digitalWrite(2, LOW);
+	D0_Low;//digitalWrite(0, LOW);
 }
 //
 //
@@ -388,6 +388,14 @@ int main(void)
   {
 	  wdt_reset();
 	  lifetm++;
+	  if (lifetm==LIFETM_LEN/2)
+		  D13_Inv;
+ 	  //if ((connected_state)&&((lifetm==LIFETM_LEN/8)||(lifetm==2*LIFETM_LEN/8)
+	   //||(lifetm==3*LIFETM_LEN/8)||(lifetm==5*LIFETM_LEN/8)||(lifetm==6*LIFETM_LEN/8)||(lifetm==7*LIFETM_LEN/8)))
+	  //{
+	  	  //connected_state = false;
+		  //D13_Inv;
+	  //}
 	  if (lifetm==LIFETM_LEN)
 	  {
 		D13_Inv;
@@ -425,6 +433,12 @@ int main(void)
         if ((input[0] == (uint8_t)SN) && (input[0] == input[1])&& (input[2] == input[1])&& (input[2] == input[3])) 
         {
           sendAll();
+		  if (connected_state)
+		  {
+			connected_state = false;
+			D13_Inv;
+		  }
+		  else connected_state = true;
           inputsize = 0;
         }
         if ((input[0] == (uint8_t)SN) && ( (uint8_t)(0-(input[0]+input[1]+input[2]))==(uint8_t)input[3] ))

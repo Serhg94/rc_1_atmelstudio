@@ -23,27 +23,69 @@
 */
 #define UART_CALC_BAUDRATE(baudRate) ((uint32_t)((F_CPU) + ((uint32_t)baudRate * 4UL)) / ((uint32_t)(baudRate) * 8UL) - 1)
 
+#ifdef _AVR_IOM328P_H_
 void UART_Init(uint32_t UART_BAUD_RATE)
 {
-	    UBRRH=BAUDRATE_HIGH;
-	    UBRRL=BAUDRATE_LOW;
-    //UBRRH = (UART_CALC_BAUDRATE(UART_BAUD_RATE)>>8) & 0xFF;
+	UBRR0H=BAUDRATE_HIGH;
+	UBRR0L=BAUDRATE_LOW;
+	//UBRRH = (UART_CALC_BAUDRATE(UART_BAUD_RATE)>>8) & 0xFF;
 	//UBRRL = (UART_CALC_BAUDRATE(UART_BAUD_RATE) & 0xFF);
-    UCSRA = ( 1<<U2X );
-    UCSRB = ((1<<TXEN) | (1<<RXEN));
-    UCSRB |= (1<<RXCIE);
+	UCSR0A = ( 1<<U2X0 );
+	UCSR0B = ((1<<TXEN0) | (1<<RXEN0));
+	UCSR0B |= (1<<RXCIE0);
 	//UCSRC = ((1<<UCSZ1) | (1<<UCSZ0));
 }
 
 void UART_SendByte(uint8_t data)
 {
-    while (!(UCSRA & (1<<UDRE)));
+	while (!(UCSR0A & (1<<UDRE0)));
+	UDR0 = data;
+}
+
+bool UART_ReadByte(uint8_t& data)
+{
+	if (UCSR0A & (1<<RXC0))
+	{
+		data = UDR0;
+		return true;
+	} else return false;
+}
+
+void UART_SendArray(uint8_t *buffer, uint16_t bufferSize)
+{
+	for(uint16_t i=0; i<bufferSize; i++)
+	UART_SendByte(buffer[i]);
+	while (!(UCSR0A & (1<<UDRE0)));
+}
+
+void UART_Fluch()
+{
+	while (!(UCSR0A & (1<<TXC0)));
+}
+#endif
+
+#ifdef _AVR_IOM8_H_
+void UART_Init(uint32_t UART_BAUD_RATE)
+{
+	UBRRH=BAUDRATE_HIGH;
+	UBRRL=BAUDRATE_LOW;
+	//UBRRH = (UART_CALC_BAUDRATE(UART_BAUD_RATE)>>8) & 0xFF;
+	//UBRRL = (UART_CALC_BAUDRATE(UART_BAUD_RATE) & 0xFF);
+	UCSRA = ( 1<<U2X );
+	UCSRB = ((1<<TXEN) | (1<<RXEN));
+	UCSRB |= (1<<RXCIE);
+	//UCSRC = ((1<<UCSZ1) | (1<<UCSZ0));
+}
+
+void UART_SendByte(uint8_t data)
+{
+	while (!(UCSRA & (1<<UDRE)));
 	UDR = data;
 }
 
 bool UART_ReadByte(uint8_t& data)
 {
-    if (UCSRA & (1<<RXC))
+	if (UCSRA & (1<<RXC))
 	{
 		data = UDR;
 		return true;
@@ -53,9 +95,16 @@ bool UART_ReadByte(uint8_t& data)
 void UART_SendArray(uint8_t *buffer, uint16_t bufferSize)
 {
 	for(uint16_t i=0; i<bufferSize; i++)
-	  UART_SendByte(buffer[i]);
-    while (!(UCSRA & (1<<UDRE)));
+	UART_SendByte(buffer[i]);
+	while (!(UCSRA & (1<<UDRE)));
 }
+
+void UART_Fluch()
+{
+	while (!(UCSRA & (1<<TXC)));
+}
+#endif
+
 //**********AnalogRead***************************
 uint16_t AnRead(uint8_t An_pin)
 {

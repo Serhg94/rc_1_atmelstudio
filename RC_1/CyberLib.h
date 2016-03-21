@@ -196,6 +196,7 @@
 	void UART_Init(uint32_t UART_BAUD_RATE);
 	void UART_SendByte(uint8_t b);
 	bool UART_ReadByte(uint8_t & data);
+	void UART_Fluch();
 	void UART_SendArray(uint8_t *buffer, uint16_t bufferSize);
 	
 //************SPI********************************
